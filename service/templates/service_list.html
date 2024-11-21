@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Services | Todos Serviços{% endblock %}
+
+{% block content %}
+  <h1>Todos os Serviços</h1>
+  <div class="container">
+    <div class="row justify-content-center"> <!-- Centraliza o conteúdo -->
+      {% for service in services %}
+        <div class="col-12 col-md-8 my-4"> <!-- Ajusta a largura e o espaçamento dos cards -->
+          <div class="card h-100 text-bg-light mx-auto" style="max-width: 700px; padding: 1rem;"> <!-- Limita a largura e centraliza -->
+            <h3 class="card-text">{{ service.titulo }}</h3>
+            <p><strong>Setor:</strong> {{ service.get_setor_display }}</p>
+            <div class="card-body">
+              <p><strong>Descrição:</strong> {{ service.descricao|truncatewords:20 }}</p>
+              <p><strong>Criado por:</strong> {{ service.idPrestador.username }}</p>
+              <a class="btn btn-info" href="{% url 'service-detail' service.idServico %}">Ver Detalhes</a>
+            </div>
+          </div> 
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}

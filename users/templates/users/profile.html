@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil - {{ user_profile.username }}{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h1 class="text-center">Perfil de {{ user_profile.username }}</h1>
+    
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h4>Informações do Usuário</h4>
+          </div>
+          <div class="card-body">
+            <p><strong>Nome de Usuário:</strong> {{ user_profile.username }}</p>
+            <p><strong>Função:</strong> {{ user_profile.get_funcao_display }}</p>
+            <p><strong>CPF:</strong> {{ user_profile.cpf }}</p>
+            <p><strong>Endereço:</strong> {{ user_profile.endereco }}</p>
+            <p><strong>Telefone:</strong> {{ user_profile.telefone }}</p>
+            <p><strong>CEP:</strong> {{ user_profile.cep }}</p>
+            <p><strong>Cargo:</strong> {{ user_profile.cargo }}</p>
+            <p><strong>Descrição:</strong> {{ user_profile.descricao|default:"Não há descrição." }}</p>
+            
+            {% if user_profile.funcao == 'P' %}
+              <p><strong>Tipo de Usuário:</strong> Prestador de Serviço</p>
+            {% else %}
+              <p><strong>Tipo de Usuário:</strong> Cliente</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 text-center">
+      <a href="{% url 'edit-profile'%}" class="btn btn-warning">Editar Perfil</a>
+      <a href="{% url 'delete-profile'%}" class="btn btn-warning">Deletar Perfil</a>
+    </div>
+  </div>
+{% endblock %}

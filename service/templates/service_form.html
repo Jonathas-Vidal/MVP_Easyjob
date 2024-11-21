@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Services | {% if action == 'create' %} Criar Serviço {% elif action == 'update' %} Atualizar Serviço {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h1 class="mt-4">
+            {% if action == 'create' %}Criar Serviço{% elif action == 'update' %}Atualizar Serviço{% endif %}
+        </h1>
+        
+        <form method="post" 
+              action="{% if action == 'create' %}{% url 'service-create' %}{% elif action == 'update' %}{% url 'service-update' service.idServico %}{% endif %}" 
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-success" type="submit">
+                {% if action == 'create' %}Criar{% elif action == 'update' %}Atualizar{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

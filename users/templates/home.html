@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="container my-5">
+    <div class="text-center">
+        <h1>Bem-vindo ao EASYJOB</h1>
+        <p class="lead">Conectando profissionais e oportunidades.</p>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Busque Empregos</h5>
+                    <p class="card-text">Encontre a vaga ideal para você entre centenas de oportunidades.</p>
+                    <a href="#" class="btn btn-primary w-100">Buscar Vagas</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ofereça Empregos</h5>
+                    <p class="card-text">Publique suas vagas e encontre o talento que sua empresa precisa.</p>
+                    <a href="{% url 'service-create' %}" class="btn btn-success w-100">Cadastrar Vaga</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

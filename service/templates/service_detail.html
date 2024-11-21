@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Services | Detalhes{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2>Detalhes do Serviço</h2>
+        </div>
+        <div class="card-body">
+            {% if user.is_authenticated and user == service.idPrestador %}
+                <a class="btn btn-warning" href="{% url 'service-update' service.idServico %}">Atualizar</a>
+                <a class="btn btn-danger" href="{% url 'service-delete' service.idServico %}">Deletar</a>
+            {% endif %}
+
+            <h3 class="mt-4">{{ service.titulo }}</h3>
+            <p><strong>Setor:</strong> {{ service.get_setor_display }}</p>
+            <p><strong>Descrição:</strong> {{ service.descricao }}</p>
+            <p><strong>Criado por:</strong> {{ service.idPrestador.username }}</p>
+        </div>
+        <div class="card-footer text-muted">
+            <p>Identificador do Serviço: {{ service.idServico }}</p>
+        </div>
+    </div>
+</div>
+{% endblock content %}
