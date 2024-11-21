@@ -1,65 +1,29 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Editar Perfil{% endblock %}
+{% block title %}Editar Perfil - {{ user.username }}{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title">Editar Perfil</h3>
-                    <form method="post">
-                        {% csrf_token %}
-                        
-                        <div class="mb-3">
-                            <label for="email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ user_profile.email }}">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="funcao" class="form-label">Função</label>
-                            <select class="form-select" id="funcao" name="funcao" required>
-                                <option value="P" {% if user_profile.funcao == "P" %}selected{% endif %}>Prestador</option>
-                                <option value="C" {% if user_profile.funcao == "C" %}selected{% endif %}>Cliente</option>
-                            </select>
-                        </div>
+<div class="container mt-5">
+  <h1 class="text-center">Editar Perfil de {{ user.username }}</h1>
 
-                        <div class="mb-3">
-                            <label for="cpf" class="form-label">CPF</label>
-                            <input type="text" class="form-control" id="cpf" name="cpf" value="{{ user_profile.cpf }}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="endereco" class="form-label">Endereço</label>
-                            <input type="text" class="form-control" id="endereco" name="endereco" value="{{ user_profile.endereco }}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="telefone" class="form-label">Telefone</label>
-                            <input type="text" class="form-control" id="telefone" name="telefone" value="{{ user_profile.telefone }}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="cep" class="form-label">CEP</label>
-                            <input type="text" class="form-control" id="cep" name="cep" value="{{ user_profile.cep }}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="cargo" class="form-label">Cargo</label>
-                            <input type="text" class="form-control" id="cargo" name="cargo" value="{{ user_profile.cargo }}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="descricao" name="descricao" rows="3">{{ user_profile.descricao }}</textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                    </form>
-                </div>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h4>Formulário de Edição</h4>
         </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- Exibe os campos do formulário -->
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+              <a href="{% url 'profile' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

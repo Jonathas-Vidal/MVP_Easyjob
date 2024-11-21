@@ -3,11 +3,12 @@ from django.contrib import messages
 from .models import Users
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
+from .forms import UserProfileForm
 
 def register_view(request):
     if request.method == 'POST':
@@ -67,7 +68,7 @@ def logout_view(request):
 def home_view(request):
     return render(request, 'home.html')
 
-
+@method_decorator(login_required, name='dispatch')
 class UserProfileView(DetailView):
     model = Users
     template_name = 'users/profile.html'
@@ -76,26 +77,32 @@ class UserProfileView(DetailView):
     def get_object(self):
         return self.request.user.users 
 
-class EditProfileView(LoginRequiredMixin, UpdateView):
+@method_decorator(login_required, name='dispatch')
+class EditProfileView(UpdateView):
     model = Users
+    form_class = UserProfileForm
     template_name = 'users/edit_profile.html'
-    fields = ['email', 'funcao', 'cpf', 'endereco', 'telefone', 'cep', 'cargo', 'descricao']
-    success_message = "Seu perfil foi atualizado com sucesso!"
-    context_object_name = 'user_profile'
+    context_object_name = 'form'
 
-    def get_object(self):
-        # Pega o usuário logado
-        return self.request.user
+    # Redireciona o usuário para o perfil após a edição
+    def get_success_url(self):
+        return reverse_lazy('profile')  # Redireciona para a página de perfil após salvar
+
+    # Usa o usuário autenticado para pegar os dados do perfil
+    def get_object(self, queryset=None):
+        return self.request.user.users  # Acessa o perfil do usuário autenticado
+
+    # Personaliza o contexto (opcional)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'update'
+        return context
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, self.success_message)
-        return response
+        messages.success(self.request, 'Seu perfil foi atualizado com sucesso.')
+        return super().form_valid(form)
 
-    def get_success_url(self):
-        # Redireciona para a página do perfil
-        return reverse_lazy('profile')
-        
+
 @login_required
 def delete_profile(request):
     if request.method == 'POST':

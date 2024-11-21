@@ -5,6 +5,7 @@ from .forms import ServiceForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from .models import Users
 
 class ServiceListView(ListView):
     model = Service
@@ -46,6 +47,8 @@ class ServiceDetailView(DetailView):
     def get_object(self):
         return Service.objects.get(pk=self.kwargs['pk'])
 
+
+
 @method_decorator(login_required, name='dispatch')
 class ServiceCreateView(CreateView):
     model = Service
@@ -53,11 +56,18 @@ class ServiceCreateView(CreateView):
     template_name = 'service_form.html'
     success_url = reverse_lazy('service-list')
 
+    def dispatch(self, request, *args, **kwargs):
+        # Verifica se o usuário tem a função 'Prestador'
+        if request.user.funcao != 'P':
+            messages.error(request, "Você precisa ser um Prestador para criar serviços.")
+            return redirect('home')  # Redireciona para a home se não for prestador
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        form.instance.idPrestador = self.request.user
+        form.instance.idPrestador = self.request.user  # Atribui o prestador ao serviço
         messages.success(self.request, 'O serviço foi criado com sucesso')
         return super().form_valid(form)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'create'

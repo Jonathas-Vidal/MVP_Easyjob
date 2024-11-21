@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
@@ -13,8 +14,8 @@
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Busque Empregos</h5>
-                    <p class="card-text">Encontre a vaga ideal para você entre centenas de oportunidades.</p>
+                    <h5 class="card-title">Busque profissionais</h5>
+                    <p class="card-text">Encontre o profissional ideal e qualificado para realizar seu serviço.</p>
                     <a href="#" class="btn btn-primary w-100">Buscar Vagas</a>
                 </div>
             </div>
@@ -22,9 +23,13 @@
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Ofereça Empregos</h5>
-                    <p class="card-text">Publique suas vagas e encontre o talento que sua empresa precisa.</p>
-                    <a href="{% url 'service-create' %}" class="btn btn-success w-100">Cadastrar Vaga</a>
+                    <h5 class="card-title">Ofereça mão de obra</h5>
+                    <p class="card-text">Cadastre funções oferecidas por você, para que os clientes possam te encontrar com facilidade</p>
+                    {% if user.funcao == 'P' %}
+                        <a href="{% url 'service-create' %}" class="btn btn-success w-100">Cadastrar Vaga</a>
+                    {% else %}
+                        <p class="text-warning">Você precisa ser um Prestador para cadastrar vagas.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
