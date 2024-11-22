@@ -1,5 +1,6 @@
 from .models import Service
 from django.contrib import messages
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from .forms import ServiceForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -47,8 +48,6 @@ class ServiceDetailView(DetailView):
     def get_object(self):
         return Service.objects.get(pk=self.kwargs['pk'])
 
-
-
 @method_decorator(login_required, name='dispatch')
 class ServiceCreateView(CreateView):
     model = Service
@@ -57,15 +56,16 @@ class ServiceCreateView(CreateView):
     success_url = reverse_lazy('service-list')
 
     def dispatch(self, request, *args, **kwargs):
-        # Verifica se o usuário tem a função 'Prestador'
-        if request.user.funcao != 'P':
+        # Verifica se o usuário tem o campo "funcao" e se é "P"
+        if hasattr(request.user, 'funcao') and request.user.funcao != 'P':
             messages.error(request, "Você precisa ser um Prestador para criar serviços.")
             return redirect('home')  # Redireciona para a home se não for prestador
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        form.instance.idPrestador = self.request.user  # Atribui o prestador ao serviço
-        messages.success(self.request, 'O serviço foi criado com sucesso')
+        # Atribui o prestador autenticado ao serviço
+        form.instance.idPrestador = self.request.user.users
+        messages.success(self.request, 'O serviço foi criado com sucesso.')
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
