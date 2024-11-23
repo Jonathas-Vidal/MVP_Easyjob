@@ -8,50 +8,7 @@
         <h1 class="text-center mb-4">Cadastro</h1>
         <form method="post" action="{% url 'register' %}">
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="username" class="form-label">Nome de Usuário</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="mb-3">
-                <label for="funcao" class="form-label">Função</label>
-                <select class="form-select" id="funcao" name="funcao" required>
-                    <option value="" selected disabled>Selecione...</option>
-                    <option value="P">Prestador</option>
-                    <option value="C">Cliente</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="cpf" class="form-label">CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" required>
-            </div>
-            <div class="mb-3">
-                <label for="endereco" class="form-label">Endereço</label>
-                <input type="text" class="form-control" id="endereco" name="endereco" required>
-            </div>
-            <div class="mb-3">
-                <label for="telefone" class="form-label">Telefone</label>
-                <input type="text" class="form-control" id="telefone" name="telefone">
-            </div>
-            <div class="mb-3">
-                <label for="cep" class="form-label">CEP</label>
-                <input type="text" class="form-control" id="cep" name="cep" required>
-            </div>
-            <div class="mb-3">
-                <label for="cargo" class="form-label">Cargo</label>
-                <input type="text" class="form-control" id="cargo" name="cargo">
-            </div>
-            <div class="mb-3">
-                <label for="descricao" class="form-label">Descrição</label>
-                <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
-            </div>
+            {{ form.as_p }}
             <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
         </form>
         <div class="text-center mt-3">

@@ -5,45 +5,27 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import render
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .forms import UserProfileForm
 
-def register_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        email = request.POST['email']
-        funcao = request.POST['funcao']
-        cpf = request.POST['cpf']
-        endereco = request.POST['endereco']
-        telefone = request.POST['telefone']
-        cep = request.POST['cep']
-        cargo = request.POST.get('cargo', '')
-        descricao = request.POST.get('descricao', '')
+class UserCreateView(CreateView):
+    model = Users
+    form_class = UserProfileForm
+    template_name = 'users/register.html'
+    success_url = reverse_lazy('login')
 
+    def form_valid(self, form):
         try:
-            # Criar usuário
-            user = Users.objects.create_user(
-                username=username,
-                password=password,
-                email=email,
-                funcao=funcao,
-                cpf=cpf,
-                endereco=endereco,
-                telefone=telefone,
-                cep=cep,
-                cargo=cargo,
-                descricao=descricao,
-            )
-            user.save()
-            messages.success(request, 'Cadastro realizado com sucesso!')
-            return redirect('login')
+            # Salva o usuário criado
+            form.save()
+            messages.success(self.request, 'Cadastro realizado com sucesso!')
+            return super().form_valid(form)
         except Exception as e:
-            messages.error(request, f'Erro ao cadastrar: {str(e)}')
-
-    return render(request, 'users/register.html')
+            # Se houver um erro ao salvar, exibe a mensagem de erro
+            messages.error(self.request, f'Erro ao cadastrar: {str(e)}')
+            return self.form_invalid(form)
 
 
 def login_view(request):
