@@ -1,0 +1,8 @@
+.logo {
+    height: 50px;
+    filter: drop-shadow(2px 2px 10px #000000);
+}
+
+.background{
+    background-color: rgb(255 212 151) !important;
+}

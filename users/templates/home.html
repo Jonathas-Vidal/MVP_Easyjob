@@ -25,11 +25,11 @@
                 <div class="card-body">
                     <h5 class="card-title">Ofereça mão de obra</h5>
                     <p class="card-text">Cadastre funções oferecidas por você, para que os clientes possam te encontrar com facilidade</p>
-                    {% if user.funcao == 'P' %}
-                        <a href="{% url 'service-create' %}" class="btn btn-success w-100">Cadastrar Vaga</a>
+                    <a href="{% url 'service-create' %}" class="btn btn-success w-100">Cadastrar Vaga</a>
+                    {% comment %} {% if user.funcao == 'P' %}
                     {% else %}
                         <p class="text-warning">Você precisa ser um Prestador para cadastrar vagas.</p>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                 </div>
             </div>
         </div>

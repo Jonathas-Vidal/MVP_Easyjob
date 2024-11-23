@@ -6,7 +6,6 @@ from .forms import ServiceForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import Users
 
 class ServiceListView(ListView):
     model = Service
@@ -37,8 +36,7 @@ class ServiceSearchView(ListView):
             if not services.exists():
                 messages.error(self.request, 'Nenhum serviço encontrado.')
             return services
-        return Service.objects.all()
-
+        return super().get_queryset()
     
 class ServiceDetailView(DetailView):
     model = Service
@@ -47,6 +45,7 @@ class ServiceDetailView(DetailView):
 
     def get_object(self):
         return Service.objects.get(pk=self.kwargs['pk'])
+
 
 @method_decorator(login_required, name='dispatch')
 class ServiceCreateView(CreateView):
